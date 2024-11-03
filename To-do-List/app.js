@@ -1,6 +1,8 @@
 const btn = document.getElementById('btn');
 const ul = document.querySelector("ul");
 const input = document.querySelector('input');
+let editMode = false;
+let editTaskVal ='';
 
 
 window.onload =()=>{
@@ -13,16 +15,24 @@ window.onload =()=>{
     }
 }
 
-
+// event listener add button
 btn.addEventListener('click',()=>{
    if(input.value!==''){
-        const todoItem = {
+
+    // for edit
+       if(editMode){
+            updateTodos(input.value);
+            editMode = false;
+            editTaskVal = '';
+       }else{                       //for add
+            const todoItem = {
             task: input.value,
             done: false
-        }
-        addTodoToList(todoItem.task, todoItem.done);
-        saveTodosToLocalStorage(todoItem);
+            }
+            addTodoToList(todoItem.task, todoItem.done);
+            saveTodosToLocalStorage(todoItem);
 
+       }
         input.value="";       
 
     }else{
@@ -31,30 +41,46 @@ btn.addEventListener('click',()=>{
    }
 });
 
-
+// event listener for edit and update button
 ul.addEventListener('click',(event)=>{
     if(event.target.classList.contains('delBtn')){
-        const todoTask = event.target.parentNode.childNodes[0].textContent;
-        event.target.parentNode.remove();
-        deleteFromTodos(todoTask);
-        alert(`task deleted`)
+        if(confirm("delete task")==true){
+            const todoTask = event.target.parentNode.childNodes[0].textContent;
+            event.target.parentNode.remove();
+            deleteFromTodos(todoTask);
+        }
     }
 
     if(event.target.classList.contains('editBtn')){
-        const val = (event.target.parentNode.childNodes[0].textContent);
-        input.value = val;
-        event.target.parentNode.remove();
-        updateTodos(val);
-
+        if(confirm('edit task')==true){
+            editTaskVal = (event.target.parentNode.childNodes[0].textContent);
+            input.value = editTaskVal;
+            event.target.parentNode.remove();
+            editMode = true;
+        }
     }
-})
+});
 
+// update todos
+function updateTodos(newTaskVal){
+    const savedTodos = localStorage.getItem('todos');
+       if(savedTodos){
+        const todos = JSON.parse(savedTodos);
+        const todoToUpdate = todos.find(todo=>todo.task===editTaskVal);
+        if(todoToUpdate){
+            todoToUpdate.task = newTaskVal;
+        }
+        localStorage.setItem('todos',JSON.stringify(todos));
+        addTodoToList(todoToUpdate.task, todoToUpdate.done)
+       }
+}
 
 
 // add todos
 function addTodoToList(task, done){
+    // console.log(done);
     const liItem = document.createElement('li');
-    const taskSpan = document.createElement('span')
+    const taskSpan = document.createElement('span');
     taskSpan.innerText= task;
 
      // create checkbox
@@ -111,7 +137,6 @@ function saveTodosToLocalStorage(todo){
 // update checkList
 function updateCheckList(task, done){
     const storedTodos = localStorage.getItem('todos');
-    // console.log(task)
     if(storedTodos){
         const todos = JSON.parse(storedTodos);
 
@@ -124,15 +149,7 @@ function updateCheckList(task, done){
     }
 }
 
-// update todos
-function updateTodos(value){
-    const savedTodos = localStorage.getItem('todos');
-       if(savedTodos){
-        const todos = JSON.parse(savedTodos)
-        const todoToUpdate = todos.filter(todo=>todo.task!==value)
-        localStorage.setItem('todos',JSON.stringify(todoToUpdate));
-       }
-}
+
 
 
 // delete todos
