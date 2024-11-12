@@ -1,0 +1,92 @@
+
+.container{
+    width: 20%;
+    height: 80vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgb(194, 191, 191);
+    color: white; */
+    border-radius: 10px;
+
+}
+
+.display-area{
+    /* width: 215px; */
+    border: 1px solid ;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    height: 30%;
+    justify-content: space-between;
+}
+
+.show-inp-op{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.keypad-btns{
+    font-weight: 600;
+    margin: 0.5rem;
+    /* border: 1px solid;
+    border-radius: 0.5rem; */
+    height: 60%;
+    display:grid;
+    grid-template-columns: repeat(4, 56px);
+    grid-template-rows: repeat(5, 56px);
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.num-btn{
+    color: white;
+    background-color: black;
+    border-radius: 0.5rem;
+}
+
+.func-btn, #clear, #erase{
+    color: orange;
+    background-color: black;
+    border-radius: 0.5rem;
+}
+
+.equal{
+    background-color: rgb(134, 132, 132);
+    border: none;
+    color: rgba(17,117,169,255);
+    font-size: 20px;
+    border-radius: 0.5rem;
+}
+
+
+.func-btn:hover,  .num-btn:hover, #clear:hover, #erase:hover {
+    background-color: rgb(33, 32, 32);
+    cursor: pointer;
+    
+}
+
+.equal:hover{
+    cursor: pointer;
+    background-color: lightgray;
+    font-weight: 600;
+}
+
+
+
+
+@media only screen and (max-width: 600px) {
+    .container{
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 768px) and (min-width:601px) {
+    .container{
+        width: 43%;
+        height: 100%;
+    }    
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 style="text-align: center;">Calculator</h1>
+    <div class="container">
+
+        <section class="display-area">
+            <div class="history">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <div class="history-container"></div>
+            </div>
+            <div class="show-inp-op">
+                <div class="display-inputs">0</div>
+                <div class="ans-Scrn">0</div>
+            </div>
+        </section>
+
+        <section class="keypad-btns">
+            <button class="" id="clear" value="">c</button>
+            <button class="" id="erase" value="">&#11013;</button>
+            <button class="func-btn" value="mod">mod</button>
+            <button class="func-btn" value="%">%</button>
+            <button class="num-btn" value="7">7</button>
+            <button class="num-btn" value="8">8</button>
+            <button class="num-btn" value="9">9</button>
+            <button class="func-btn" value="/">/</button>
+            
+            <button class="num-btn" value="4">4</button>
+            <button class="num-btn" value="5">5</button>
+            <button class="num-btn" value="6">6</button>
+            <button class="func-btn" value="*">X</button>
+            <button class="num-btn" value="1">1</button>
+            <button class="num-btn" value="2">2</button>
+            <button class="num-btn" value="3">3</button>
+            <button class="func-btn" value="-">-</button>
+            <button class="num-btn" value="0">0</button>
+            <button class="num-btn" value=".">.</button>
+            <button class="equal" id="evalute" value="">=</button>
+            <button class="func-btn" value="+">+</button>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
