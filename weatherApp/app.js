@@ -1,16 +1,19 @@
 const btn = document.getElementById('btn');
-const input = document.querySelector('input');
+const input = document.querySelector('.inp-field');
 const msg = document.querySelector('#msg');
-const citySpan = document.querySelector('span');
-const countryCode =  document.querySelector('sup');
+const cityDiv = document.querySelector('.city');
 const tempDiv = document.querySelector('.temp');
 const weatherInfo = document.querySelector('.weather-info');
+const checkbox = document.getElementById('checkbox');
 
-window.onload = async function(){ 
-    const defaultCity = 'chittagong'
-    weatherData(defaultCity);
-}
 
+// default weather
+// window.onload = async function(){ 
+//     const defaultCity = 'chittagong'
+//     weatherData(defaultCity);
+// }
+
+// search weather from input field
 btn.addEventListener('click',()=>{
     const city = input.value;
     if(input.value===''){
@@ -20,6 +23,35 @@ btn.addEventListener('click',()=>{
         input.value = '';
     }
 });
+
+// Current location weather
+checkbox.addEventListener('change',()=>{
+    if(checkbox.checked){
+        if(navigator.geolocation.getCurrentPosition(async function showLocation(position){
+            const {latitude, longitude} = position.coords;
+            console.log(latitude,longitude);
+         
+            const accessToken = 'pk.eyJ1Ijoic2hhcm1pbi0xMjMiLCJhIjoiY20wMG1hNzlrMTF4dTJsb3E1aThkZ2Z3ciJ9.t6xd4A1iwqFqcx7EoCDJzA';
+            const url =  `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`;
+
+            try{
+                const response = await fetch(url);
+                if(!response.ok){
+                    throw new Error(`HTTP ERROR! status: ${res.status}`);
+                }
+                const data = await response.json();
+                const country = data.features[1].place_name
+                ;
+               console.log(country)
+            }catch(e){
+                throw e;
+            }
+        }));
+
+    }
+});
+
+
 
 // weatherData Function
 async function weatherData(searchedCity){
@@ -47,20 +79,20 @@ async function weatherData(searchedCity){
 
 //KalvinToCelsius function
 function KalvinToCelsius(temp){
-
     const celcius = temp-273.15;
     return celcius.toFixed(2)+'\u00B0 C';
 }
 
+// show Weather in page
 function showWeatherInfo(cityName, country, temp, weatherDesc){
- 
     const iconCode =  weatherDesc.icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
-    citySpan.innerText = cityName;
-    countryCode.innerText = country;
+    cityDiv.firstElementChild.innerText = cityName;
+    cityDiv.lastElementChild.innerText = country;
     tempDiv.innerText = temp;
     weatherInfo.querySelector('img').src = iconUrl;
     weatherInfo.lastElementChild.innerHTML = weatherDesc.description;
 }
+
 
