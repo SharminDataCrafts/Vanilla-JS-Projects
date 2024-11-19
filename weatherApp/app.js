@@ -14,51 +14,73 @@ window.onload = async function(){
 }
 
 // search weather from input field
-btn.addEventListener('click',()=>{
+btn.addEventListener('click',(e)=>{
     const city = input.value;
     if(input.value===''){
-        msg.innerHTML = `Enter place name to know about weather 😃`
+        msg.innerHTML = `Enter place name to know about weather 😃`;
+        console.log(input.value)
         input.focus();
+        e.preventDefault();
     }else{
         weatherData(city);
         input.value = '';
         msg.innerHTML ='';
+        e.preventDefault();
     }
 });
+
+// Handle Enter key press in the input field to trigger the button click
+input.addEventListener('keydown',(event)=>{
+    if(event.key==='Enter'){
+        if(input.value===''){
+            msg.innerHTML = `Enter place name to know about weather 😃`;
+            console.log(input.value)
+            input.focus();
+            event.preventDefault();
+        }else{
+            btn.click();
+            event.preventDefault()
+        }
+    }
+})
+
 
 // Current location weather
 checkbox.addEventListener('change',()=>{
     if(checkbox.checked){
-        if(navigator.geolocation.getCurrentPosition(async function showLocation(position){
-            const {latitude, longitude} = position.coords;
-            const accessToken = 'pk.eyJ1Ijoic2hhcm1pbi0xMjMiLCJhIjoiY20wMG1hNzlrMTF4dTJsb3E1aThkZ2Z3ciJ9.t6xd4A1iwqFqcx7EoCDJzA';
-            const url =  `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`;
+        if(navigator.geolocation.getCurrentPosition(
+            async function showLocation(position){
+                const {latitude, longitude} = position.coords;
+                const accessToken = 'pk.eyJ1Ijoic2hhcm1pbi0xMjMiLCJhIjoiY20wMG1hNzlrMTF4dTJsb3E1aThkZ2Z3ciJ9.t6xd4A1iwqFqcx7EoCDJzA';
+                const url =  `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`;
 
-            try{
-                const response = await fetch(url);
-                if(!response.ok){
-                    throw new Error(`HTTP ERROR! status: ${res.status}`);
+                try{
+                    const response = await fetch(url);
+                    if(!response.ok){
+                        throw new Error(`HTTP ERROR! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    const features = data.features;
+                    const cityFeature = features.find((feature) => feature.place_type.includes('place'));
+                    
+                    if (cityFeature) {
+                        // Access the city name
+                        const city = cityFeature.text;
+                        weatherData(city);
+                    } else {
+                        msg.innerHTML = `location not found 😩`
+                    }
+                }catch(e){
+                    msg.innerHTML = `Error retrieving location: ${e.message} 😩`;
+                    console.log(e);
                 }
-                const data = await response.json();
-                const features = data.features;
-                const cityFeature = features.find((feature) => feature.place_type.includes('place'));
-                
-                if (cityFeature) {
-                    // Access the city name
-                    const city = cityFeature.text;
-                    weatherData(city);
-                } else {
-                    msg.innerHTML = `location not found 😩`
-                }
-            }catch(e){
-                throw e;
+            },
+            function errorCallback(error) {
+                msg.innerHTML = `Error retrieving location: ${error.message} 😩`;
             }
-        }));
-
+        ));
     }
 });
-
-
 
 // weatherData Function
 async function weatherData(searchedCity){
