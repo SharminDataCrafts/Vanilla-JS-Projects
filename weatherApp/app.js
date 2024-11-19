@@ -8,19 +8,21 @@ const checkbox = document.getElementById('checkbox');
 
 
 // default weather
-// window.onload = async function(){ 
-//     const defaultCity = 'chittagong'
-//     weatherData(defaultCity);
-// }
+window.onload = async function(){ 
+    const defaultCity = 'chittagong'
+    weatherData(defaultCity);
+}
 
 // search weather from input field
 btn.addEventListener('click',()=>{
     const city = input.value;
     if(input.value===''){
+        msg.innerHTML = `Enter place name to know about weather 😃`
         input.focus();
     }else{
         weatherData(city);
         input.value = '';
+        msg.innerHTML ='';
     }
 });
 
@@ -29,8 +31,6 @@ checkbox.addEventListener('change',()=>{
     if(checkbox.checked){
         if(navigator.geolocation.getCurrentPosition(async function showLocation(position){
             const {latitude, longitude} = position.coords;
-            console.log(latitude,longitude);
-         
             const accessToken = 'pk.eyJ1Ijoic2hhcm1pbi0xMjMiLCJhIjoiY20wMG1hNzlrMTF4dTJsb3E1aThkZ2Z3ciJ9.t6xd4A1iwqFqcx7EoCDJzA';
             const url =  `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`;
 
@@ -40,9 +40,16 @@ checkbox.addEventListener('change',()=>{
                     throw new Error(`HTTP ERROR! status: ${res.status}`);
                 }
                 const data = await response.json();
-                const country = data.features[1].place_name
-                ;
-               console.log(country)
+                const features = data.features;
+                const cityFeature = features.find((feature) => feature.place_type.includes('place'));
+                
+                if (cityFeature) {
+                    // Access the city name
+                    const city = cityFeature.text;
+                    weatherData(city);
+                } else {
+                    msg.innerHTML = `location not found 😩`
+                }
             }catch(e){
                 throw e;
             }
