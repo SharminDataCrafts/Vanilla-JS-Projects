@@ -57,7 +57,7 @@ input::placeholder {
     align-items: center;
 }
 
-.city p{
+.city span{
     color: gray;
     font-size: 1.5rem;
 }
@@ -72,12 +72,12 @@ input::placeholder {
     font-size: 4rem;
 }
 
-.icon{
+.weather-info{
     text-align: center;
 
 }
 
-.icon p{
+.weather-info p{
     margin-top: 0.25rem;
     color: gray;
     font-weight: 600;
