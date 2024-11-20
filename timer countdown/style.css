@@ -1,0 +1,42 @@
+
+
+h1{
+    text-align: center;
+    margin: 1.5rem;
+}
+
+.section{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.top{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* .icon{
+    border-bottom: 1px solid;
+} */
+
+.icon i{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.icon i:hover{
+    font-weight: 600;
+    border-bottom: 1px solid;
+}
+
+.container{
+    border: 2px solid;
+    border-radius: 10px;
+    margin: auto;
+    width: 25%;
+    height: 70vh;
+  
+}
